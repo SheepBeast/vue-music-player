@@ -35,13 +35,17 @@ export default {
     enter() {
       let ctx = this;
       return new Promise((resolve, reject) => {
+        Vue.$loadingTip.show()
         ctx.float = true;
 
         ctx.$nextTick(() => {
           let image = new Image()
           image.onload = function() {
             ctx.swiper.go(ctx.index);
-            setTimeout(resolve, 300)
+            setTimeout(function() {
+              Vue.$loadingTip.hide()
+              resolve()
+            }, 300)
           }
           image.src = ctx.pics[ctx.index]
         });
