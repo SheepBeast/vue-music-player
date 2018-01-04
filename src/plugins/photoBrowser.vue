@@ -32,14 +32,18 @@ export default {
     };
   },
   methods: {
-    enter(index) {
+    enter() {
       let ctx = this;
       return new Promise((resolve, reject) => {
         ctx.float = true;
 
         ctx.$nextTick(() => {
-          ctx.swiper.go(index);
-          resolve();
+          let image = new Image()
+          image.onload = function() {
+            ctx.swiper.go(ctx.index);
+            setTimeout(resolve, 300)
+          }
+          image.src = ctx.pics[ctx.index]
         });
       });
     },
@@ -157,7 +161,8 @@ export default {
         photoBrowserStyles = this.photoBrowserStyles,
         relatedTarget = els[index];
 
-      await this.enter(index);
+      console.log(index)
+      await this.enter();
       await this.enterActive(
         fixerStyles,
         photoBrowserStyles,
